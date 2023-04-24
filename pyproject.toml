@@ -9,8 +9,8 @@ packages = [{include = "huawei_commission"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 netmiko = "^4.1.2"
-dotenv = "^0.0.5"
 getpass-asterisk = "^1.0.1"
+python-dotenv = "^1.0.0"
 
 
 [build-system]
