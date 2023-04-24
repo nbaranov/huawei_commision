@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "huawei-commission"
+version = "0.1.0"
+description = "Set of scripts for commission huawei network elements."
+authors = ["Nikita Baranov, Vlad Tihonov, Denis Olisov, Andrew Shinkarchuk"]
+readme = "README.md"
+packages = [{include = "huawei_commission"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+netmiko = "^4.1.2"
+dotenv = "^0.0.5"
+getpass-asterisk = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
