@@ -1,2 +1,8 @@
 # enviroment viriables
 .env
+
+#cache
+__pycache__
+
+# log directory
+log
