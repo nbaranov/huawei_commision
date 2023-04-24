@@ -1,19 +1,21 @@
 import sys
-
-# import modules
-import software
-
-
 from connection import acc_ssh_connect, get_username_and_password
 from os.path import dirname, abspath, join
-import sys
+from os import getenv
+from dotenv import load_dotenv
+
 
 THIS_DIR = dirname(__file__)
 CODE_DIR = abspath(join(THIS_DIR, '..'))
 sys.path.append(CODE_DIR)
 from output import log_commission
 
-IP = "10.174.68.60"
+# import modules
+import software
+
+
+load_dotenv()
+IP = getenv("IP")
 
 # connect
 acc_ne = acc_ssh_connect(IP, *get_username_and_password())
