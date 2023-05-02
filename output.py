@@ -6,5 +6,10 @@ def log_commission(ip, header, result, output):
             md.write(f'## <span style="color:red"> {header} {result} </span>\n\n')
         md.write(f" ```\n {output} \n``` \n\n")
         
-    with open(f"log/{ip}.txt", "a", encoding="UTF-8") as txt:
-        txt.write(f"\n\n {header} --- {result} \n\n {output}")
+    with open(f"log/{ip}.txt", "a", encoding="UTF-8") as txt: 
+        txt.write(f"""\n\n{'#' * 80} 
+#{f'{header} --- {result}'.center(78, " ")}#
+{'=-START-BLOCK-='.center(80, "#")} 
+\n{output} 
+{'=-END-BLOCK-='.center(80, "#")}
+""")
