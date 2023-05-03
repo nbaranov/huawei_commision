@@ -1,19 +1,30 @@
-#display alarm active / urgebt, 
+#display alarm active / urgent, 
 # dis alarm history, 
 # display reboot-info, 
 # ping 10.188.32.5, 
 # ping 10.188.32.11
 
 
-from pprint import pprint
+import sys
+from os.path import dirname, abspath, join
+THIS_DIR = dirname(__file__)
+CODE_DIR = abspath(join(THIS_DIR, '..'))
+sys.path.append(CODE_DIR)
+from output.output import log_commission
+
+def check(acc_ne, ip):
+    display_alarm_urgent(acc_ne, ip)
+    display_reboot_info(acc_ne, ip)
+    ping_ms1(acc_ne, ip)
+    ping_ms2(acc_ne, ip)
     
 
-def display_alarm_urgent(acc_ne):
+def display_alarm_urgent(acc_ne, ip):
     command = "display alarm urgent"
     output = acc_ne.send_command(command)
-    print(output)
     result = "OK" if len(output.split("\n")) < 4 else "FAIL"
-    return command, result, output
+    
+    log_commission(ip, command, result, output)
 
 # нет такой команды
 # def display_alarm_history(acc_ne):
@@ -24,24 +35,24 @@ def display_alarm_urgent(acc_ne):
 #     return command, result, output    
 
 
-def display_reboot_info(acc_ne):
+def display_reboot_info(acc_ne, ip):
     command = "display reboot-info"
     output = acc_ne.send_command(command)
     output = "\n".join(output.split("\n")[:8])
     result = "OK" # TODO check time last reboot
 
-    return command, result, output
+    log_commission(ip, command, result, output)
 
 
-def ping_ms1(acc_ne):
+def ping_ms1(acc_ne, ip):
     command = "ping 10.188.32.5"
     output = acc_ne.send_command(command)
     result = "OK" if "0.00% packet loss" in output else "FAIL"
-    return command, result, output
+    log_commission(ip, command, result, output)
 
 
-def ping_ms2(acc_ne):
+def ping_ms2(acc_ne, ip):
     command = "ping 10.188.32.11"
     output = acc_ne.send_command(command)
     result = "OK" if "0.00% packet loss" in output else "FAIL"
-    return command, result, output
+    log_commission(ip, command, result, output)
