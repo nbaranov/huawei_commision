@@ -1,0 +1,113 @@
+body {
+    margin: 0;
+    padding: 0 25px;
+    background-color: #f3f3f4 !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size: 18px;
+    width: 95vi;
+}
+
+h2 {
+    text-align: center;
+    margin: 10px
+}
+
+h3 {
+    text-align: center;
+    margin: 5px
+}
+
+
+header {
+    margin: 10px;
+    padding: 0;
+    background-color: lightblue;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border: 0.13em solid #c9ccd4;
+    border-radius: 0.625em;
+    background-color: #fff;
+}
+
+fieldset {
+    display: flex;
+    flex-direction: column 
+}
+
+input{
+    padding: 2px;
+    margin: 2px;
+}
+
+.main {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    min-height: 600px;
+    height: 90vh;
+}
+
+.side-menu {
+    background-color: lightblue;
+    flex: 0 max-content;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    border: 0.13em solid #c9ccd4;
+    border-radius: 0.625em;
+    background-color: #fff;
+
+    margin: 10px 10px 0px 0px;
+    padding: 5px;
+}
+
+.run-button{
+    width: 97%;
+    padding: 5px;
+    margin: 10px auto;
+    font-size: 18px;
+}
+
+.run-button::before {
+    content: "Run";
+  }
+  
+.run-button:hover::before {
+    content: "с'Run'ь";
+  }
+
+
+.output {
+    background-color: lightgreen;
+    min-width: 250px;
+    flex: 1;
+    flex-direction: column;
+    display: flex;
+    align-items: unset;
+    border: 0.13em solid #c9ccd4;
+    border-radius: 0.625em;
+    background-color: #fff;
+    margin: 10px 0px 0px 10px;
+}
+
+.block {
+    border: 4px;
+    border-style: groove;
+    margin: 5px 10px;
+    padding: 5px;
+    border-radius: 0.625em;
+}
+
+.ok {
+    border-color: green;
+    background-color: rgba(144, 238, 144, 0.5);
+}
+
+.false {
+    border-color: red;
+    background-color: rgba(240, 128, 128, 0.5);
+}

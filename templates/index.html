@@ -1,0 +1,76 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commision</title>
+    <link rel="stylesheet" href="{% static '/style.css' %}">
+</head>
+<body>
+    <header>
+        <h2>Huawei commision of network element</h2>
+    </header>
+    <div class="main">
+        <div class="side-menu">
+            <fieldset>
+                <legend>Input credentials:</legend>
+                <input type="text" name="ip" id="ip" placeholder="4.0.255.0">
+                <input  type="login" name="login" id="login" placeholder="Login">
+                <input type="password" name="password" id="password" placeholder="Password">
+            </fieldset>
+            <fieldset>
+                <legend>Select NE type:</legend>
+                <div>
+                <input type="radio" id="acc" name="ne" value="acc"
+                        checked>
+                <label for="acc">acc</label>
+                </div>
+            
+                <div>
+                <input type="radio" id="atn" name="ne" value="atn">
+                <label for="atn">atn</label>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Select checks:</legend>
+                <div>
+                    <input type="checkbox" name="alarms" id="alarms">
+                    <label for="alarms">Alarms</label>
+                </div>
+
+                <div>
+                    <input type="checkbox" name="management-system" id="management-system">
+                    <label for="management-system">Management System</label>
+                </div>
+            
+                <div>
+                    <input type="checkbox" name="software" id="software">
+                    <label for="software">Software</label>
+                </div>
+            </fieldset>
+            <button class="run-button" type="submit"></button>
+        </div>
+    <div class="output">
+        <h3>Check result:</h3>
+        <div class="block ok">
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+        </div>
+
+        <div class="block false">
+            <p>
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+            </p>
+        </div>
+    </div>
+
+    </div>
+
+    
+</body>
+</html>
