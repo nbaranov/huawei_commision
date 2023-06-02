@@ -3,4 +3,4 @@ from django.template.response import TemplateResponse
 
 
 def index(request):
-    return TemplateResponse(request, ["templates/index.html"])
+    return TemplateResponse(request, ["templates/commision/index.html"])
