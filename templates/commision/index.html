@@ -1,4 +1,5 @@
 {% load static %}
+{% load %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +16,7 @@
     </header>
     <div class="main">
         <div class="side-menu">
+            <div class="fix">
             <fieldset>
                 <legend>Input credentials:</legend>
                 <input type="text" name="ip" id="ip" placeholder="4.0.255.0">
@@ -23,50 +25,186 @@
             </fieldset>
             <fieldset>
                 <legend>Select NE type:</legend>
-                <div>
-                <input type="radio" id="acc" name="ne" value="acc"
-                        checked>
-                <label for="acc">acc</label>
-                </div>
-            
-                <div>
-                <input type="radio" id="atn" name="ne" value="atn">
-                <label for="atn">atn</label>
-                </div>
+                {% for device in devices  %}
+                    <div>
+                    <input type="radio" id="{{device.name}}" name="ne" value="{{device.name}}"checked>
+                    <label for="{{device.name}}">{{device.name}}</label>
+                    </div>
+                {% endfor %}
             </fieldset>
 
             <fieldset>
                 <legend>Select checks:</legend>
-                <div>
-                    <input type="checkbox" name="alarms" id="alarms">
-                    <label for="alarms">Alarms</label>
-                </div>
+                {% for cat in categoryes %}
+                    <div class="category">
+                        <input class="category {{cat.name}}" type="checkbox" name="{{cat.name}}" id="{{cat.name}}">
+                        <label for="{{cat.name}}">{{cat.name}}</label>
+                    </div>
+                    {% for com in commands %}
+                        {% if cat == com.category %}
+                            <div class="subcategory {{cat.name}}">
+                                <input class="{{com.command}}" type="checkbox" name="{{com.command}}" id="{{com.command}}">
+                                <label for="{{com.command}}">{{com.command}}</label>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
 
-                <div>
-                    <input type="checkbox" name="management-system" id="management-system">
-                    <label for="management-system">Management System</label>
-                </div>
-            
-                <div>
-                    <input type="checkbox" name="software" id="software">
-                    <label for="software">Software</label>
-                </div>
             </fieldset>
-            <button class="run-button" type="submit"></button>
+            <button class="left-button srun" type="submit"></button>
+            <button class="left-button" type="download">Download result</button>
+            </div>
         </div>
     <div class="output">
         <h3>Check result:</h3>
-        <div class="block ok">
-            <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
-        </div>
+    <div class="block">
+        <div class="output-block">
+            <b> ping 10.188.32.5 </b>
+            <pre>
+PING 10.188.32.5: 56  data bytes, press CTRL_C to break
+Reply from 10.188.32.5: bytes=56 Sequence=1 ttl=57 time=12 ms
+Reply from 10.188.32.5: bytes=56 Sequence=2 ttl=57 time=12 ms
+Reply from 10.188.32.5: bytes=56 Sequence=3 ttl=57 time=12 ms
+Reply from 10.188.32.5: bytes=56 Sequence=4 ttl=57 time=12 ms
+Reply from 10.188.32.5: bytes=56 Sequence=5 ttl=57 time=12 ms
 
-        <div class="block false">
-            <p>
-                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-            </p>
+--- 10.188.32.5 ping statistics ---
+5 packet(s) transmitted
+5 packet(s) received
+0.00% packet loss
+round-trip min/avg/max = 12/12/12 ms
+            </pre>
         </div>
+        
+        <div class="button-block">
+            <button class="button ok" > Ok </button>
+            <button class="button false" > False </button>
+        </div>
+    </div>
+    <div class="block">
+        <div class="output-block">
+            <b>display version</b>
+            <pre>
+Huawei Versatile Routing Platform Software
+VRP (R) software, Version 5.70 (S3328 V100R006C05)
+Copyright (C) 2003-2013 HUAWEI TECH CO., LTD
+Quidway S3328TP-EI Routing Switch uptime is 7 weeks, 2 days, 7 hours, 49 minutes
+
+EOFEA 0(Master) : uptime is 7 weeks, 2 days, 7 hours, 49 minutes
+128M bytes DDR Memory
+16M bytes FLASH
+Pcb      Version :  VER B
+Basic  BOOTROM  Version :  349 Compiled at Mar 15 2013, 11:00:55
+Software Version : VRP (R) Software, Version 5.70 (V100R006C05)             
+            </pre>
+        </div>
+        <div class="button-block">
+            <button class="button ok" > Ok </button>
+            <button class="button false" > False </button>
+        </div>
+    </div>
+    <div class="block ">
+        <div class="output-block">
+            <b>display environment</b>
+            <pre>
+Environment information:
+Temperature information:
+SlotID   CurrentTemperature  LowLimit  HighLimit
+                (deg c )        (deg c)   (deg c )        
+    0              46             0         75              
+    
+#################################=-END-BLOCK-=##################################
+
+
+################################################################################ 
+#                            display elabel --- OK                             #
+################################=-START-BLOCK-=################################# 
+
+/$[System Integration Version]
+/$SystemIntegrationVersion=3.0
+
+
+[Slot_0]
+/$[Board Integration Version]
+/$BoardIntegrationVersion=3.0
+
+
+[Main_Board]
+
+/$[ArchivesInfo Version]
+/$ArchivesInfoVersion=3.0
+
+
+[Board Properties]
+BoardType=CX5Z128AM
+BarCode=21023513776TCC001724
+Item=02351377
+Description=Quidway S3328TP-EI,CX5Z128AM,S3328TP-EI Mainframe(24 10/100 BASE-T ports and 2 Combo GE(10/100/1000 BASE-T+100/1000 Base-X) ports and 2 SFP GE (1000 BASE-X) ports (SFP Req.) and AC 110/220V)
+Manufactured=2012-12-22
+VendorName=Huawei
+IssueNumber=00
+CLEICode=
+BOM=
+
+
+
+
+[Port_1]
+/$[ArchivesInfo Version]
+/$ArchivesInfoVersion=3.0
+
+
+[Board Properties]
+BoardType=RTXM191-400
+BarCode=EC130800370298  
+Item=
+Description=1Gbps-1310nm--10000
+Manufactured=13-02-25
+/$VendorName=WTD             
+IssueNumber=
+CLEICode=
+BOM=
+
+
+[Port_2]
+/$[ArchivesInfo Version]
+/$ArchivesInfoVersion=3.0
+
+
+[Board Properties]
+BoardType=RTXM191-400
+BarCode=EC130800241817  
+Item=
+Description=1Gbps-1310nm--10000
+Manufactured=13-02-21
+/$VendorName=WTD             
+IssueNumber=
+CLEICode=
+BOM=
+
+
+[Port_4]
+/$[ArchivesInfo Version]
+/$ArchivesInfoVersion=3.0
+
+
+[Board Properties]
+BoardType=RTXM191-400
+BarCode=EC135000600039  
+Item=
+Description=1Gbps-1310nm--10000
+Manufactured=13-12-16
+/$VendorName=WTD             
+IssueNumber=
+CLEICode=
+BOM=
+            </pre>
+        </div>
+        <div class="button-block">
+            <button class="button ok" > Ok </button>
+            <button class="button false" > False </button>
+        </div>
+    </div>
     </div>
 
     </div>

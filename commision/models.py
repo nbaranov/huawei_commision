@@ -19,5 +19,5 @@ class Command(models.Model):
     for_device = models.ManyToManyField(Device)
 
     def __str__(self):
-        return self.command
+        return f"{self.category.name} - {self.command}"
     
