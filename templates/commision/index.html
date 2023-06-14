@@ -1,5 +1,4 @@
 {% load static %}
-{% load %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,9 +18,10 @@
             <div class="fix">
             <fieldset>
                 <legend>Input credentials:</legend>
-                <input type="text" name="ip" id="ip" placeholder="4.0.255.0">
+                <input type="text" name="ip" id="ip" placeholder="10.174.0.2">
                 <input  type="login" name="login" id="login" placeholder="Login">
                 <input type="password" name="password" id="password" placeholder="Password">
+                <input type="text" name="iplist" id="iplist" placeholder="10.174.0.1, 10.174.0.2">
             </fieldset>
             <fieldset>
                 <legend>Select NE type:</legend>
@@ -52,10 +52,10 @@
 
             </fieldset>
             <button class="left-button srun" type="submit"></button>
-            <button class="left-button" type="download">Download result</button>
+            <button class="left-button" onclick="generatePDF()">Download result</button>
             </div>
         </div>
-    <div class="output">
+    <div id="output" class="output">
         <h3>Check result:</h3>
     <div class="block">
         <div class="output-block">
@@ -77,8 +77,8 @@ round-trip min/avg/max = 12/12/12 ms
         </div>
         
         <div class="button-block">
-            <button class="button ok" > Ok </button>
-            <button class="button false" > False </button>
+            <button class="button ok" onclick="colorize('ok', this)"> Ok </button>
+            <button class="button false" onclick="colorize('false', this)"> False </button>
         </div>
     </div>
     <div class="block">
@@ -99,27 +99,14 @@ Software Version : VRP (R) Software, Version 5.70 (V100R006C05)
             </pre>
         </div>
         <div class="button-block">
-            <button class="button ok" > Ok </button>
-            <button class="button false" > False </button>
+            <button class="button ok" onclick="colorize('ok', this)"> Ok </button>
+            <button class="button false" onclick="colorize('false', this)"> False </button>
         </div>
     </div>
     <div class="block ">
         <div class="output-block">
-            <b>display environment</b>
+            <b>display elabel</b>
             <pre>
-Environment information:
-Temperature information:
-SlotID   CurrentTemperature  LowLimit  HighLimit
-                (deg c )        (deg c)   (deg c )        
-    0              46             0         75              
-    
-#################################=-END-BLOCK-=##################################
-
-
-################################################################################ 
-#                            display elabel --- OK                             #
-################################=-START-BLOCK-=################################# 
-
 /$[System Integration Version]
 /$SystemIntegrationVersion=3.0
 
@@ -201,14 +188,23 @@ BOM=
             </pre>
         </div>
         <div class="button-block">
-            <button class="button ok" > Ok </button>
-            <button class="button false" > False </button>
+            <button class="button ok" onclick="colorize('ok', this)" > Ok </button>
+            <button class="button false" onclick="colorize('false', this)"> False </button>
         </div>
     </div>
     </div>
 
     </div>
 
-    
+<script>
+    var categoryes = {{ categoryes }};
+    var commands = {{ commands }};
+</script>
+<script src="{% static './html2pdf.bundle.min.js' %}"> </script>
+<script src="{% static './script.js' %}"> </script>
+{{ devices|json_script }}
+{{ categoryes|json_script }}
+{{ commands|json_script }}
+
 </body>
 </html>
