@@ -1,63 +1,26 @@
-{% load static %}
+{% extends '../base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Commision</title>
-    <link rel="stylesheet" href="{% static '/style.css' %}">
-</head>
-<body>
-    <header>
-        <h2>Huawei commision of network element</h2>
-    </header>
-    <div class="main">
-        <div class="side-menu">
+    {% block side_menu %}
             <div class="fix">
             <fieldset>
                 <legend>Input credentials:</legend>
                 <input type="text" name="ip" id="ip" placeholder="10.174.0.2">
                 <input  type="login" name="login" id="login" placeholder="Login">
                 <input type="password" name="password" id="password" placeholder="Password">
-                <input type="text" name="iplist" id="iplist" placeholder="10.174.0.1, 10.174.0.2">
+                {% comment %} <input type="text" name="iplist" id="iplist" placeholder="10.174.0.1, 10.174.0.2"> {% endcomment %}
             </fieldset>
-            <fieldset>
-                <legend>Select NE type:</legend>
-                {% for device in devices  %}
-                    <div>
-                    <input type="radio" id="{{device.name}}" name="ne" value="{{device.name}}"checked>
-                    <label for="{{device.name}}">{{device.name}}</label>
-                    </div>
-                {% endfor %}
-            </fieldset>
+            <fieldset id="devices"><legend >Select NE type:</legend></fieldset>
 
-            <fieldset>
+            <fieldset id="commands">
                 <legend>Select checks:</legend>
-                {% for cat in categoryes %}
-                    <div class="category">
-                        <input class="category {{cat.name}}" type="checkbox" name="{{cat.name}}" id="{{cat.name}}">
-                        <label for="{{cat.name}}">{{cat.name}}</label>
-                    </div>
-                    {% for com in commands %}
-                        {% if cat == com.category %}
-                            <div class="subcategory {{cat.name}}">
-                                <input class="{{com.command}}" type="checkbox" name="{{com.command}}" id="{{com.command}}">
-                                <label for="{{com.command}}">{{com.command}}</label>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                {% endfor %}
 
             </fieldset>
             <button class="left-button srun" type="submit"></button>
             <button class="left-button" onclick="generatePDF()">Download result</button>
             </div>
-        </div>
-    <div id="output" class="output">
-        <h3>Check result:</h3>
-    <div class="block">
+    {% endblock side_menu %}
+
+    {% block main_block %}
         <div class="output-block">
             <b> ping 10.188.32.5 </b>
             <pre>
@@ -195,16 +158,4 @@ BOM=
     </div>
 
     </div>
-
-<script>
-    var categoryes = {{ categoryes }};
-    var commands = {{ commands }};
-</script>
-<script src="{% static './html2pdf.bundle.min.js' %}"> </script>
-<script src="{% static './script.js' %}"> </script>
-{{ devices|json_script }}
-{{ categoryes|json_script }}
-{{ commands|json_script }}
-
-</body>
-</html>
+    {% endblock main_block %}
