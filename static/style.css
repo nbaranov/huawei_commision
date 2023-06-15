@@ -6,7 +6,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-size: 18px;
+    font-size: 16px;
     width: 95vi;
 }
 
@@ -43,6 +43,14 @@ input{
     margin: 2px;
 }
 
+pre {
+    white-space: pre-wrap;       
+    white-space: -moz-pre-wrap;  
+    white-space: -pre-wrap;      
+    white-space: -o-pre-wrap;    
+    word-wrap: break-word;       
+}
+
 .main {
     display: flex;
     flex-wrap: wrap;
@@ -60,23 +68,31 @@ input{
     border: 0.13em solid #c9ccd4;
     border-radius: 0.625em;
     background-color: #fff;
-
     margin: 10px 10px 0px 0px;
     padding: 5px;
+    min-width: 250px;
 }
 
-.run-button{
-    width: 97%;
+.fix {
+    position: sticky;
+    top: 10px;
+    bottom: 10px;
+}
+
+.left-button{
+    width: 100%;
     padding: 5px;
-    margin: 10px auto;
-    font-size: 18px;
+    margin-top: 10px;
+    font-size: 16px;
 }
 
-.run-button::before {
+
+
+.srun::before {
     content: "Run";
   }
   
-.run-button:hover::before {
+.srun:hover::before {
     content: "с'Run'ь";
   }
 
@@ -95,11 +111,25 @@ input{
 }
 
 .block {
+    display: flex;
+    flex-direction: column;
+}
+
+.output-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;    
+    align-items: center;
     border: 4px;
     border-style: groove;
-    margin: 5px 10px;
-    padding: 5px;
     border-radius: 0.625em;
+    margin: 5px 5px 0px 5px;
+    padding: 5px;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    text-align: left;
+    border-color: rgb(199, 179, 2);
+    background-color: rgba(253, 255, 157, 0.5);
 }
 
 .ok {
@@ -110,4 +140,57 @@ input{
 .false {
     border-color: red;
     background-color: rgba(240, 128, 128, 0.5);
+}
+
+.category {
+    padding: 1;
+}
+
+.command{
+    padding-left: 20px;
+}
+
+.button-block {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+
+.button {
+    height: 30px;
+    width: 50%;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    outline: none;
+    border-style: groove;
+    border-radius: 0.625em;
+    margin: 2px 5px 5px 5px;
+    /* box-shadow: 0 4px #999; */
+  }
+  
+  .button:hover {opacity: 0.8;}
+  
+  .button:active {
+    background-color: #a3a3a3;
+    /* box-shadow: 0 2px #666; */
+    transform: translateY(2px);
+  }
+
+.comment{
+    font-size: inherit;
+    border: 2px;
+    border-style: groove;
+    border-radius: 0.625em;
+    margin: 5px 5px 0px 5px;
+    padding: 5px;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    height: 100%;
+    overflow:hidden;
+    text-align: left;
+    border-color: rgb(0, 0, 0);
+    background-color: rgba(250, 250, 250, 0.2)
 }

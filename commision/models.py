@@ -9,6 +9,13 @@ class Device(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
+    
+    def get_categoryes(self):
+        categoryes = self.question_options.all().values('options')
+        option_ids = []
+        for option in categoryes:
+            option_ids.append(option['options'])
+        return Option.objects.filter(id__in=option_ids)
 
     def __str__(self):
         return self.name
@@ -19,5 +26,5 @@ class Command(models.Model):
     for_device = models.ManyToManyField(Device)
 
     def __str__(self):
-        return self.command
+        return f"{self.category.name} - {self.command}"
     

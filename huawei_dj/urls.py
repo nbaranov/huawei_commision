@@ -17,9 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from rest_framework import routers
+from commision import views
 
+router = routers.DefaultRouter()
+router.register(r'devices', views.DeviceViewSet)
+router.register(r'categoryes', views.CategoryViewSet)
+router.register(r'commands', views.CommandViewSet)
 
+# Wire up our API using automatic URL routing.
+# Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     path('', include("commision.urls")),
     path('admin/', admin.site.urls),
+    path('api-v1/', include(router.urls)),
 ]
