@@ -12,6 +12,8 @@ netmiko = "^4.1.2"
 getpass-asterisk = "^1.0.1"
 python-dotenv = "^1.0.0"
 django = "^4.2"
+djangorestframework = "^3.14.0"
+django-filter = "^23.2"
 
 
 [build-system]
