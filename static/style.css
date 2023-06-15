@@ -6,7 +6,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    font-size: 18px;
+    font-size: 16px;
     width: 95vi;
 }
 
@@ -70,6 +70,7 @@ pre {
     background-color: #fff;
     margin: 10px 10px 0px 0px;
     padding: 5px;
+    min-width: 250px;
 }
 
 .fix {
@@ -82,7 +83,7 @@ pre {
     width: 100%;
     padding: 5px;
     margin-top: 10px;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 
@@ -122,7 +123,7 @@ pre {
     border: 4px;
     border-style: groove;
     border-radius: 0.625em;
-    margin: 5px 5px;
+    margin: 5px 5px 0px 5px;
     padding: 5px;
     width: -webkit-fill-available;
     width: -moz-available;
@@ -141,15 +142,11 @@ pre {
     background-color: rgba(240, 128, 128, 0.5);
 }
 
-.for-check {
-
-}
-
 .category {
     padding: 1;
 }
 
-.subcategory{
+.command{
     padding-left: 20px;
 }
 
@@ -164,19 +161,36 @@ pre {
     height: 30px;
     width: 50%;
     display: inline-block;
-    font-size: 18px;
+    font-size: 16px;
     cursor: pointer;
     text-align: center;
     outline: none;
     border-style: groove;
     border-radius: 0.625em;
-    margin: 5px;
-    box-shadow: 0 6px #999;
+    margin: 2px 5px 5px 5px;
+    /* box-shadow: 0 4px #999; */
   }
   
-  .button:hover {opacity: 1;}
+  .button:hover {opacity: 0.8;}
   
   .button:active {
     background-color: #a3a3a3;
-    box-shadow: 0 2px #666;
+    /* box-shadow: 0 2px #666; */
     transform: translateY(2px);
+  }
+
+.comment{
+    font-size: inherit;
+    border: 2px;
+    border-style: groove;
+    border-radius: 0.625em;
+    margin: 5px 5px 0px 5px;
+    padding: 5px;
+    width: -webkit-fill-available;
+    width: -moz-available;
+    height: 100%;
+    overflow:hidden;
+    text-align: left;
+    border-color: rgb(0, 0, 0);
+    background-color: rgba(250, 250, 250, 0.2)
+}
