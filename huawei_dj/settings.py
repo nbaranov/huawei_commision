@@ -41,10 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'daphne',
     'django.contrib.staticfiles',
 
     'rest_framework',
     'django_filters',
+    'channels',
 
     'commision',
 ]
@@ -78,6 +80,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'huawei_dj.wsgi.application'
+ASGI_APPLICATION = 'huawei_dj.asgi.application'
 
 
 # Database

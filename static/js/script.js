@@ -24,13 +24,15 @@ function colorize(el_class, element) {
 
 function generatePDF() {
     const ip = document.getElementById('ip').value.trim()
-    const element = document.getElementById('output');
+    let element = document.getElementById('output');
+    const ne = sessionStorage.getItem('ne')
     let blocks = element.getElementsByClassName('block')
     for (const block of blocks) {
         let buttons = block.getElementsByClassName('button-block')
         for (const button of buttons) {
             block.removeChild(button)
         }
+    element = document.getElementById('output');
     }
     // textareas = document.getElementsByClassName('comment')
     // for (const ta of textareas) {
@@ -39,7 +41,7 @@ function generatePDF() {
 
     var opt = {
         margin: 0.2,
-        filename:     ip +'.pdf',
+        filename:     ne + '_' + ip +'.pdf',
         image:        { type: 'jpeg', quality: 0.4 },
         html2canvas:  { scale: 1, scrollX: 0, scrollY: 0 },
         jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
@@ -110,7 +112,7 @@ function addCategory(cat_id) {
                             div.innerHTML = `<label>
                                 <input type="checkbox" name="` + com.command + `" 
                                 onclick="updateCheckboxInGroup(this);" 
-                                value=`+ com.id + `">`
+                                value=`+ com.id + `>`
                                 + com.command + `</label>`
                             categoryNode.appendChild(div)
                         }
@@ -164,4 +166,105 @@ function nl2br (str, is_xhtml) {
     }
     var breakTag = (is_xhtml || typeof is_xhtml === 'undefined') ? '<br />' : '<br>';
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
+}
+
+function getIDList() {
+    let com_divs = document.getElementsByClassName("command")
+    com_divs = Array.from(com_divs)
+    com_divs = com_divs.filter((obj) => obj.getElementsByTagName('input')[0].checked === true)
+    id_list = []
+    for (const div of com_divs) {
+        id_list.push(Number(div.getElementsByTagName('input')[0].value));
+    }
+    return id_list
+}
+
+function getCredentials() {
+    const ip = document.getElementById('ip').value.toString().trim()
+    const login = document.getElementById('login').value.toString().trim()
+    const password = document.getElementById('password').value.toString().trim()
+    if (ip && login && password) {
+        return {
+            'ip': ip,
+            'login': login,
+            'password': password
+        }
+    } else alert("You need to input IP, Login and Password")
+}
+
+function runSocket() {
+    const cred = getCredentials();
+    console.log({cred});
+    const id_list = getIDList();
+    console.log({ id_list });
+    if (id_list) {
+        ws = new WebSocket('ws://' + window.location.toString().split('//')[1] + 'ws/checkne/')
+        ws.onopen = function () {
+            ws.send(JSON.stringify({
+                'ip': cred.ip,
+                'login': cred.login,
+                'password': cred.password,
+                'id_list': id_list
+            }));
+            container = document.getElementById('output')
+            container.innerHTML = `<h3 id="status">Try to connect to ` + cred.ip + `</h3>`
+        }
+    }
+
+    ws.onmessage = function (e) {
+        console.log('runned onmessage method');
+        console.log({e});
+        data = JSON.parse(e.data)
+        if (data.status) updateStatus(data.status)
+        if (data.ne) sessionStorage.setItem('ne', data.ne)
+        if (data.command) addOutputBlock(data.command, (data.output) ? data.output : "Output is empty")
+        
+    };
+
+    ws.onerror = function(err) {
+        console.error('Socket encountered error: ', err.message, 'Closing socket');
+        updateStatus(`<h3 id="status">Error during work with NE </h3>`)
+        ws.close();
+      };
+}
+
+function updateStatus(stat) {
+    container = document.getElementById('status')
+    container.innerHTML = stat
+}
+
+function addOutputBlock(command, output) {
+    template = `<div class="block">
+    <div class="output-block">
+        <b>` + command + `</b>
+        <pre>` + output + `</pre>
+    </div>
+    
+    <div class="button-block">
+        <button class="button ok" onclick="colorize('ok', this)"> Ok </button>
+        <button class="button false" onclick="colorize('false', this)"> False </button>
+    </div>
+</div>`
+    
+    container = document.getElementById('output')
+    container.insertAdjacentHTML('beforeend', template)
+}
+
+
+function checkAll() {
+    checkboxes = document.getElementsByClassName('category')
+    for (const box of checkboxes) {
+        if (box.checked === false) {
+            box.click()
+        }
+    }
+}
+
+function uncheckAll() {
+    checkboxes = document.getElementsByClassName('category')
+    for (const box of checkboxes) {
+        if (box.checked === true) {
+            box.click()
+        }
+    }
 }
