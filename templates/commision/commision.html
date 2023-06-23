@@ -15,147 +15,15 @@
                 <legend>Select checks:</legend>
 
             </fieldset>
-            <button class="left-button srun" type="submit"></button>
+            <div class='buttons'>
+                <button class="left-button" onclick="checkAll();">Check All</button>
+                <button class="left-button" onclick="uncheckAll()">Uncheck All</button>    
+            </div>
+            <button class="left-button srun" onclick="runSocket();" type="submit"></button>
             <button class="left-button" onclick="generatePDF()">Download result</button>
             </div>
     {% endblock side_menu %}
 
     {% block main_block %}
-        <div class="output-block">
-            <b> ping 10.188.32.5 </b>
-            <pre>
-PING 10.188.32.5: 56  data bytes, press CTRL_C to break
-Reply from 10.188.32.5: bytes=56 Sequence=1 ttl=57 time=12 ms
-Reply from 10.188.32.5: bytes=56 Sequence=2 ttl=57 time=12 ms
-Reply from 10.188.32.5: bytes=56 Sequence=3 ttl=57 time=12 ms
-Reply from 10.188.32.5: bytes=56 Sequence=4 ttl=57 time=12 ms
-Reply from 10.188.32.5: bytes=56 Sequence=5 ttl=57 time=12 ms
-
---- 10.188.32.5 ping statistics ---
-5 packet(s) transmitted
-5 packet(s) received
-0.00% packet loss
-round-trip min/avg/max = 12/12/12 ms
-            </pre>
-        </div>
-        
-        <div class="button-block">
-            <button class="button ok" onclick="colorize('ok', this)"> Ok </button>
-            <button class="button false" onclick="colorize('false', this)"> False </button>
-        </div>
-    </div>
-    <div class="block">
-        <div class="output-block">
-            <b>display version</b>
-            <pre>
-Huawei Versatile Routing Platform Software
-VRP (R) software, Version 5.70 (S3328 V100R006C05)
-Copyright (C) 2003-2013 HUAWEI TECH CO., LTD
-Quidway S3328TP-EI Routing Switch uptime is 7 weeks, 2 days, 7 hours, 49 minutes
-
-EOFEA 0(Master) : uptime is 7 weeks, 2 days, 7 hours, 49 minutes
-128M bytes DDR Memory
-16M bytes FLASH
-Pcb      Version :  VER B
-Basic  BOOTROM  Version :  349 Compiled at Mar 15 2013, 11:00:55
-Software Version : VRP (R) Software, Version 5.70 (V100R006C05)             
-            </pre>
-        </div>
-        <div class="button-block">
-            <button class="button ok" onclick="colorize('ok', this)"> Ok </button>
-            <button class="button false" onclick="colorize('false', this)"> False </button>
-        </div>
-    </div>
-    <div class="block ">
-        <div class="output-block">
-            <b>display elabel</b>
-            <pre>
-/$[System Integration Version]
-/$SystemIntegrationVersion=3.0
-
-
-[Slot_0]
-/$[Board Integration Version]
-/$BoardIntegrationVersion=3.0
-
-
-[Main_Board]
-
-/$[ArchivesInfo Version]
-/$ArchivesInfoVersion=3.0
-
-
-[Board Properties]
-BoardType=CX5Z128AM
-BarCode=21023513776TCC001724
-Item=02351377
-Description=Quidway S3328TP-EI,CX5Z128AM,S3328TP-EI Mainframe(24 10/100 BASE-T ports and 2 Combo GE(10/100/1000 BASE-T+100/1000 Base-X) ports and 2 SFP GE (1000 BASE-X) ports (SFP Req.) and AC 110/220V)
-Manufactured=2012-12-22
-VendorName=Huawei
-IssueNumber=00
-CLEICode=
-BOM=
-
-
-
-
-[Port_1]
-/$[ArchivesInfo Version]
-/$ArchivesInfoVersion=3.0
-
-
-[Board Properties]
-BoardType=RTXM191-400
-BarCode=EC130800370298  
-Item=
-Description=1Gbps-1310nm--10000
-Manufactured=13-02-25
-/$VendorName=WTD             
-IssueNumber=
-CLEICode=
-BOM=
-
-
-[Port_2]
-/$[ArchivesInfo Version]
-/$ArchivesInfoVersion=3.0
-
-
-[Board Properties]
-BoardType=RTXM191-400
-BarCode=EC130800241817  
-Item=
-Description=1Gbps-1310nm--10000
-Manufactured=13-02-21
-/$VendorName=WTD             
-IssueNumber=
-CLEICode=
-BOM=
-
-
-[Port_4]
-/$[ArchivesInfo Version]
-/$ArchivesInfoVersion=3.0
-
-
-[Board Properties]
-BoardType=RTXM191-400
-BarCode=EC135000600039  
-Item=
-Description=1Gbps-1310nm--10000
-Manufactured=13-12-16
-/$VendorName=WTD             
-IssueNumber=
-CLEICode=
-BOM=
-            </pre>
-        </div>
-        <div class="button-block">
-            <button class="button ok" onclick="colorize('ok', this)" > Ok </button>
-            <button class="button false" onclick="colorize('false', this)"> False </button>
-        </div>
-    </div>
-    </div>
-
-    </div>
+            <h3> Check result will be here: </h3>
     {% endblock main_block %}

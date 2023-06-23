@@ -25,7 +25,7 @@ class CommandViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows commands to be viewed or edited.
     """
-    queryset = Command.objects.all().order_by('category')
+    queryset = Command.objects.all().order_by('id')
     serializer_class = CommandSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['for_device']

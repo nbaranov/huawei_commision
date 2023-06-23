@@ -51,6 +51,16 @@ pre {
     word-wrap: break-word;       
 }
 
+#devices{
+    overflow-y: scroll;
+    max-height: 10vh;    
+}
+
+#commands {
+    overflow-y: scroll;
+    max-height: 50vh;
+}
+
 .main {
     display: flex;
     flex-wrap: wrap;
