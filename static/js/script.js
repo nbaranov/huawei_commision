@@ -217,7 +217,7 @@ function runSocket() {
         data = JSON.parse(e.data)
         if (data.status) updateStatus(data.status)
         if (data.ne) sessionStorage.setItem('ne', data.ne)
-        if (data.command) addOutputBlock(data.command, (data.output) ? data.output : "Output is empty")
+        if (data.command) addOutputBlock(data.command, data.check_status , (data.output) ? data.output : "Output is empty")
         
     };
 
@@ -233,11 +233,13 @@ function updateStatus(stat) {
     container.innerHTML = stat
 }
 
-function addOutputBlock(command, output) {
+function addOutputBlock(command, checkStatus , output) {
+    comment = (checkStatus ===  'false') ? `<textarea placeholder="Comment" class="comment"></textarea>` : ''
     template = `<div class="block">
-    <div class="output-block">
+    <div class="output-block ` + checkStatus + `">
         <b>` + command + `</b>
         <pre>` + output + `</pre>
+` + comment + `
     </div>
     
     <div class="button-block">

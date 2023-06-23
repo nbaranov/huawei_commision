@@ -11,7 +11,7 @@ from .models import Command
 def get_command_list(com_id_list):
      com_list = []
      for com_id in com_id_list:
-          com_list.append(Command.objects.get(pk=com_id).command)
+          com_list.append(Command.objects.get(pk=com_id))
      return com_list
 
 class RunCommandsOnNE(AsyncJsonWebsocketConsumer):
