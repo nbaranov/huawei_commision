@@ -207,7 +207,7 @@ function runSocket() {
                 'id_list': id_list
             }));
             container = document.getElementById('output')
-            container.innerHTML = `<h3 id="status">Try to connect to ` + cred.ip + `</h3>`
+            container.innerHTML = `<h2 id="status">Try to connect to ` + cred.ip + `</h2>`
         }
     }
 
@@ -217,13 +217,13 @@ function runSocket() {
         data = JSON.parse(e.data)
         if (data.status) updateStatus(data.status)
         if (data.ne) sessionStorage.setItem('ne', data.ne)
-        if (data.command) addOutputBlock(data.command, (data.output) ? data.output : "Output is empty")
+        if (data.command) addOutputBlock(data.command, data.check_status , (data.output) ? data.output : "Output is empty")
         
     };
 
     ws.onerror = function(err) {
         console.error('Socket encountered error: ', err.message, 'Closing socket');
-        updateStatus(`<h3 id="status">Error during work with NE </h3>`)
+        updateStatus(`<h2 id="status">Error during work with NE </h2>`)
         ws.close();
       };
 }
@@ -233,11 +233,13 @@ function updateStatus(stat) {
     container.innerHTML = stat
 }
 
-function addOutputBlock(command, output) {
+function addOutputBlock(command, checkStatus , output) {
+    comment = (checkStatus ===  'false') ? `<textarea placeholder="Comment" class="comment"></textarea>` : ''
     template = `<div class="block">
-    <div class="output-block">
+    <div class="output-block ` + checkStatus + `">
         <b>` + command + `</b>
         <pre>` + output + `</pre>
+` + comment + `
     </div>
     
     <div class="button-block">
