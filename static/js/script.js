@@ -207,7 +207,7 @@ function runSocket() {
                 'id_list': id_list
             }));
             container = document.getElementById('output')
-            container.innerHTML = `<h3 id="status">Try to connect to ` + cred.ip + `</h3>`
+            container.innerHTML = `<h2 id="status">Try to connect to ` + cred.ip + `</h2>`
         }
     }
 
@@ -223,7 +223,7 @@ function runSocket() {
 
     ws.onerror = function(err) {
         console.error('Socket encountered error: ', err.message, 'Closing socket');
-        updateStatus(`<h3 id="status">Error during work with NE </h3>`)
+        updateStatus(`<h2 id="status">Error during work with NE </h2>`)
         ws.close();
       };
 }
