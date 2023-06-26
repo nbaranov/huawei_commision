@@ -22,36 +22,55 @@ function colorize(el_class, element) {
     }
 }
 
-function generatePDF() {
+function generateHTML() {
+    $.get('static/style.css', function (css) {
+        saveHTML(css)
+    })
+}
+
+    
+function saveHTML(css) {
     const ip = document.getElementById('ip').value.trim()
-    let element = document.getElementById('output');
     const ne = sessionStorage.getItem('ne')
+    let new_doc = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>` + ne + ip + `</title>
+    <style>
+` + css + `
+    </style>
+</head>
+<body>
+    `
+    let element = document.getElementById('output').cloneNode(true);
     let blocks = element.getElementsByClassName('block')
     for (const block of blocks) {
         let buttons = block.getElementsByClassName('button-block')
         for (const button of buttons) {
             block.removeChild(button)
         }
-    element = document.getElementById('output');
-    }
-    // textareas = document.getElementsByClassName('comment')
-    // for (const ta of textareas) {
-    //     ta.value = nl2br(ta.value)
-    // }
-
-    var opt = {
-        margin: 0.2,
-        filename:     ne + '_' + ip +'.pdf',
-        image:        { type: 'jpeg', quality: 0.4 },
-        html2canvas:  { scale: 1, scrollX: 0, scrollY: 0 },
-        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-    };
-
-    window.html2pdf().set(opt)
-        .from(element)
-        .save();
+        const tav = block.getElementsByTagName('textarea')[0]
+        if (tav) {
+            div = document.createElement('div')
+            div.classList.add('comment')
+            div.innerHTML = 'Comment: ' + tav.value
+            tav.parentNode.appendChild(div)
+            tav.parentNode.removeChild(tav)
+        }
+    }    
+    var bl = new Blob([new_doc, element.innerHTML, '</body>'], { type: "text/html" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(bl);
+    a.download = ne + "_" + ip + ".html";
+    a.hidden = true;
+    document.body.appendChild(a);
+    a.innerHTML = "something random";
+    a.click();
 }
-
 
 function getDevices() {
     devices = JSON.parse(sessionStorage.getItem('devs'))
