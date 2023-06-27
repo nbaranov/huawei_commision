@@ -236,7 +236,11 @@ function runSocket() {
         data = JSON.parse(e.data)
         if (data.status) updateStatus(data.status)
         if (data.ne) sessionStorage.setItem('ne', data.ne)
-        if (data.command) addOutputBlock(data.command, data.check_status , (data.output) ? data.output : "Output is empty")
+        if (data.command) addOutputBlock(
+                data.command,
+                (data.output) ? data.check_status : "ok",
+                (data.output) ? data.output : "Output is empty"
+        )
         
     };
 

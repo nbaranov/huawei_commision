@@ -2,6 +2,7 @@ from netmiko.huawei import HuaweiSSH
 from netmiko.exceptions import NetmikoAuthenticationException
 from netmiko.exceptions import SSHException
 from netmiko.exceptions import NetmikoTimeoutException
+from re import search
 
 
 def run_command_list(ip, username, password, com_list):
@@ -13,14 +14,17 @@ def run_command_list(ip, username, password, com_list):
             for com in com_list:
                 output = ne.send_command(com.command)
                 check_status = ''
-                if com.check_include:
-                    for string in com.check_include.split('\n'):
-                        check_status = 'ok' if string in output else check_status
-                if com.check_exclude:
-                    for string in com.check_exclude.split('\n'):
-                        check_status = 'false' if string in output else check_status
-                if com.out_line_limit:
-                    output = '\n'.join(output.split('\n')[:com.out_line_limit])
+                if output:
+                    if com.check_include:
+                        for string in com.check_include.split('\n'):
+                            check_status = 'ok' if search(string.encode(), output) else check_status
+                    if com.check_exclude:
+                        for string in com.check_exclude.split('\n'):
+                            check_status = 'false' if search(string.encode(), output) else check_status
+                    if com.out_line_limit:
+                        output = '\n'.join(output.split('\n')[:com.out_line_limit])
+                else:
+                    check_status = 'ok'
                 yield { 
                     'command': com.command,
                     'check_status': check_status,
