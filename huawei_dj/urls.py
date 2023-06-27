@@ -20,6 +20,9 @@ from django.urls import path, include
 from rest_framework import routers
 from commision import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 router = routers.DefaultRouter()
 router.register(r'devices', views.DeviceViewSet)
 router.register(r'categoryes', views.CategoryViewSet)
@@ -31,4 +34,4 @@ urlpatterns = [
     path('', include("commision.urls")),
     path('admin/', admin.site.urls),
     path('api-v1/', include(router.urls)),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
