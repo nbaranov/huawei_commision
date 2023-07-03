@@ -1,5 +1,5 @@
 window.onload = () => {
-    getDevices()
+    loadDevices()
 }
 
 function colorize(el_class, element) {
@@ -72,26 +72,45 @@ function saveHTML(css) {
     a.click();
 }
 
-function getDevices() {
-    devices = JSON.parse(sessionStorage.getItem('devs'))
-    const node = document.getElementById("devices")
-    // console.log("run getDevices functions", {devices});
-    for (let i = 0; i < devices.length; i++) {
-        if (devices[i]) {
-            let html = document.createElement('div')
-            html.insertAdjacentHTML('beforeend', `
+
+
+function loadDevices() {
+    fetch(("/api-v1/devices/"))
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            const devices = []
+            for (const device of data.results) {
+                devices[device.id] = device.name
+            }
+            sessionStorage.setItem('devs', JSON.stringify(devices))
+            console.log("devices loaded ", { devices });
+            return devices
+        })
+        .then((devices) => {
+            devices = JSON.parse(sessionStorage.getItem('devs'))
+            const node = document.getElementById("devices")
+            for (let i = 0; i < devices.length; i++) {
+                if (devices[i]) {
+                    let html = document.createElement('div')
+                    html.insertAdjacentHTML('beforeend', `
             <label>
                 <input type="radio" id="`+ devices[i] + `" name="ne" 
-                value=` + i.toString() + ` onclick="getCommands(` + i.toString() +`, this)">` + devices[i] + 
-                `
+                value=` + i.toString() + ` onclick="getCommands(` + i.toString() + `, this)">` + devices[i] +
+                        `
             </label>
             `)
-            node.appendChild(html)
-        }
-    }
-    node.getElementsByTagName("label")[0].click()
+                    node.appendChild(html)
+                }
+            }
+            node.getElementsByTagName("label")[0].click()
+        })
 }
-        
+
 
 function addCategory(cat_id) {
             let html = document.createElement('div');
@@ -236,7 +255,11 @@ function runSocket() {
         data = JSON.parse(e.data)
         if (data.status) updateStatus(data.status)
         if (data.ne) sessionStorage.setItem('ne', data.ne)
-        if (data.command) addOutputBlock(data.command, data.check_status , (data.output) ? data.output : "Output is empty")
+        if (data.command) addOutputBlock(
+                data.command,
+                (data.output) ? data.check_status : "ok",
+                (data.output) ? data.output : "Output is empty"
+        )
         
     };
 

@@ -15,12 +15,10 @@ def run_command_list(ip, username, password, com_list):
                 output = ne.send_command(com.command)
                 check_status = ''
                 if output:
-                    if com.check_include:
-                        for string in com.check_include.split('\n'):
-                            check_status = 'ok' if search(string.encode(), output) else check_status
-                    if com.check_exclude:
-                        for string in com.check_exclude.split('\n'):
-                            check_status = 'false' if search(string.encode(), output) else check_status
+                    if com.ok_if_include:
+                            check_status = 'ok' if search(com.ok_if_include, output) else check_status
+                    if com.false_if_include:
+                            check_status = 'false' if search(com.false_if_include, output) else check_status
                     if com.out_line_limit:
                         output = '\n'.join(output.split('\n')[:com.out_line_limit])
                 else:
