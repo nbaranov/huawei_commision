@@ -16,14 +16,9 @@ def run_command_list(ip, username, password, com_list):
                 check_status = ''
                 if output:
                     if com.ok_if_include:
-                        print("run ok_if_inlude")
                         check_status = 'ok' if search(com.ok_if_include, output) else check_status
                     if com.ok_if_exclude:
-                        print("run ok_if_exlude")
-                        print(check_status)
-                        print('ok' if not(search(com.ok_if_exclude, output)) else 'false')
                         check_status = 'ok' if not(search(com.ok_if_exclude, output)) else 'false' 
-                        print(check_status)
                     if com.false_if_include:
                         check_status = 'false' if search(com.false_if_include, output) else check_status
                     if com.out_line_limit:
