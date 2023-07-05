@@ -4,7 +4,7 @@ import asyncio
 from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from asgiref.sync import sync_to_async
 
-from acc.connection import run_command_list
+from atn.connection import run_command_list
 from .models import Command
 
 @sync_to_async
