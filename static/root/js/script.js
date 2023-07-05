@@ -1,4 +1,5 @@
 window.onload = () => {
+    loadCategoryes()
     loadDevices()
 }
 
@@ -111,6 +112,22 @@ function loadDevices() {
         })
 }
 
+function loadCategoryes() {
+    fetch(("/api-v1/categoryes/"))
+        .then((response) => {
+            if (!response.ok) { throw new Error(`HTTP error: ${response.status}`); }
+            return response.json();
+        })
+        .then((data) => {
+            const devices = []
+            for (const device of data.results) {
+                devices[device.id] = device.name
+            }
+            sessionStorage.setItem("cat", JSON.stringify(devices))
+            return devices
+        })
+}
+
 
 function addCategory(cat_id) {
             let html = document.createElement('div');
@@ -123,21 +140,16 @@ function addCategory(cat_id) {
             return html
         }
 
-        function getCommands(dev_id, dev_div) {
-            // console.log("run getCommands for device with id", {dev_id}, {dev_div});
-            // get commands from DB
+        function getCommands(dev_id) {
             fetch("/api-v1/commands/?for_device=" + dev_id.toString())
                 .then((response) => response.json())
                 .then((data) => {
                     coms = data.results
-                    // console.log({coms});
-            // get list of unique categoryes
                     catsIds = []
                     for (const com of coms) {
                         catsIds.push(com.category)
                     }
                     const uniqCatsIds = catsIds.filter(uniqueArrayFilter)
-            // create elements for command by categoryes
                     const commandsNode = document.getElementById("commands")
                     commandsNode.innerHTML = '';
                     for (cat_id of uniqCatsIds) {
@@ -155,7 +167,7 @@ function addCategory(cat_id) {
                             categoryNode.appendChild(div)
                         }
                         commandsNode.appendChild(categoryNode)
-                    } 
+                    }
                 })
         }
 
