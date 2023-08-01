@@ -89,7 +89,7 @@ function loadDevices() {
                 devices[device.id] = device.name
             }
             sessionStorage.setItem('devs', JSON.stringify(devices))
-            console.log("devices loaded ", { devices });
+            // console.log("devices loaded ", { devices });
             return devices
         })
         .then((devices) => {
@@ -244,9 +244,9 @@ function getCredentials() {
 
 function runSocket() {
     const cred = getCredentials();
-    console.log({cred});
+    // console.log({cred});
     const id_list = getIDList();
-    console.log({ id_list });
+    // console.log({ id_list });
     if (id_list) {
         ws = new WebSocket('ws://' + window.location.toString().split('//')[1] + 'ws/checkne/')
         ws.onopen = function () {
@@ -262,8 +262,8 @@ function runSocket() {
     }
 
     ws.onmessage = function (e) {
-        console.log('runned onmessage method');
-        console.log({e});
+        // console.log('runned onmessage method');
+        // console.log({e});
         data = JSON.parse(e.data)
         if (data.status) updateStatus(data.status)
         if (data.ne) sessionStorage.setItem('ne', data.ne)
@@ -292,7 +292,8 @@ function addOutputBlock(command, checkStatus , output) {
     template = `<div class="block">
     <div class="output-block ` + checkStatus + `">
         <b>` + command + `</b>
-        <pre>` + output + `</pre>
+        <pre class="acc_head" onclick="showHide(this)">Вывод команды</pre>
+        <pre class="acc_body">` + output + `</pre>
 ` + comment + `
     </div>
     
@@ -323,4 +324,9 @@ function uncheckAll() {
             box.click()
         }
     }
+}
+
+function showHide(el) {
+    console.log("run hide unhide");
+    $(el).siblings('.acc_body').slideToggle();
 }

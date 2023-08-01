@@ -205,3 +205,12 @@ pre {
     border-color: rgb(0, 0, 0);
     background-color: rgba(250, 250, 250, 0.2)
 }
+
+.acc_head{
+    background:#444;
+    padding:5px;
+    color:#fff;
+}
+.acc_body{
+    display:none;
+}
