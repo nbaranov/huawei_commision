@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'channels',
 
     'commision',
+    'atn',
+    'parsers',
 ]
 
 MIDDLEWARE = [
