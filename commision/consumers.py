@@ -14,6 +14,7 @@ def get_command_list(com_id_list):
           com_list.append(Command.objects.get(pk=com_id))
      return com_list
 
+
 class RunCommandsOnNE(AsyncJsonWebsocketConsumer):
      async def connect(self):
           await self.accept()
@@ -22,21 +23,22 @@ class RunCommandsOnNE(AsyncJsonWebsocketConsumer):
           data = json.loads(text_data)
           com_id_list = data.get('id_list')
           com_list = await get_command_list(com_id_list)
+          
           output = run_command_list(data['ip'], data['login'], 
-                                    data['password'], com_list)
+                                    data['password'], data['iplist'], com_list)
           while True:
                try:
-                    out = output.__next__()
+                    out = await anext(output)
                     if out.get('status'):
                          ne_name = out.get('status').split()[-1]
                          out.update({'ne': ne_name})
                     await self.send_json(out)
-                    await asyncio.sleep(0.2)
+                    await asyncio.sleep(0.1)
                except ConnectionError:
-                    await self.send_json({'status': f'Failed connect to {data["ip"]}'})
+                    await self.send_json({'status': f'Не удалось подключиться к {data["ip"]}'})
                     break
-               except StopIteration:
-                    await self.send_json({'status': f'{ne_name} checked!'})
+               except StopAsyncIteration:
+                    await self.send_json({'status': f'{ne_name} проверен!'})
                     break
                     
           
