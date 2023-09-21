@@ -161,7 +161,7 @@ input[type="submit"], button {
     .filtered .actions,
 
     #changelist .paginator {
-        border-top-color: var(--hairline-color); /* XXX Is this used at all? */
+        border-top-color: var(--hairline-color); /* Is this used at all? */
     }
 
     #changelist .results + .paginator {
@@ -400,7 +400,7 @@ input[type="submit"], button {
     }
 
     .datetimeshortcuts {
-        color: var(--border-color); /* XXX Redundant, .datetime span also sets #ccc */
+        color: var(--border-color); /*  Redundant, .datetime span also sets #ccc */
     }
 
     .form-row .datetime input.vDateField, .form-row .datetime input.vTimeField {

@@ -1,6 +1,32 @@
 window.onload = () => {
     loadCategoryes()
     loadDevices()
+    loadCred()
+}
+
+
+function saveIP() {
+    const ip = document.getElementById('ip').value.toString().trim()
+    localStorage.setItem("ip", ip);
+}
+function saveLogin() {
+    const login = document.getElementById('login').value.toString().trim()
+    localStorage.setItem("login", login);
+}
+function savePassword() {
+    const password = document.getElementById('password').value.toString().trim()
+    localStorage.setItem("password", password);
+}
+function saveIPList() {
+    const iplist = document.getElementById('iplist').value.toString().trim()
+    localStorage.setItem("iplist", iplist);
+}
+
+function loadCred() {
+    document.getElementById('ip').value = localStorage.getItem("ip");
+    document.getElementById('login').value = localStorage.getItem("login");
+    document.getElementById('password').value = localStorage.getItem("password");
+    document.getElementById('iplist').value = localStorage.getItem("iplist");
 }
 
 function colorize(el_class, element) {
@@ -58,10 +84,16 @@ function saveHTML(css) {
         if (tav) {
             div = document.createElement('div')
             div.classList.add('comment')
-            div.innerHTML = 'Comment: ' + tav.value
+            div.innerHTML = tav.value.replace(/\n/g, '<br>')
             tav.parentNode.appendChild(div)
             tav.parentNode.removeChild(tav)
         }
+        let outputBlock = block.getElementsByClassName('output-block')[0]
+        let hideButton = block.getElementsByClassName('acc_head')[0]
+        // console.log(hideButton);
+        if (hideButton) { outputBlock.removeChild(hideButton) }
+        let hidetext = block.getElementsByClassName('acc_body')[0]
+        hidetext.style.display = 'block'
     }    
     var bl = new Blob([new_doc, element.innerHTML, '</body>'], { type: "text/html" });
     var a = document.createElement("a");
@@ -89,7 +121,7 @@ function loadDevices() {
                 devices[device.id] = device.name
             }
             sessionStorage.setItem('devs', JSON.stringify(devices))
-            console.log("devices loaded ", { devices });
+            // console.log("devices loaded ", { devices });
             return devices
         })
         .then((devices) => {
@@ -233,20 +265,22 @@ function getCredentials() {
     const ip = document.getElementById('ip').value.toString().trim()
     const login = document.getElementById('login').value.toString().trim()
     const password = document.getElementById('password').value.toString().trim()
+    const iplist = document.getElementById('iplist').value.toString().trim()
     if (ip && login && password) {
         return {
             'ip': ip,
             'login': login,
-            'password': password
+            'password': password,
+            'iplist' : (iplist) ? iplist : ''
         }
-    } else alert("You need to input IP, Login and Password")
+    } else alert("Вам нужно ввести IP оборудования, Логин и Пароль")
 }
 
 function runSocket() {
     const cred = getCredentials();
-    console.log({cred});
+    // console.log({cred});
     const id_list = getIDList();
-    console.log({ id_list });
+    // console.log({ id_list });
     if (id_list) {
         ws = new WebSocket('ws://' + window.location.toString().split('//')[1] + 'ws/checkne/')
         ws.onopen = function () {
@@ -254,30 +288,34 @@ function runSocket() {
                 'ip': cred.ip,
                 'login': cred.login,
                 'password': cred.password,
+                'iplist': cred.iplist,
                 'id_list': id_list
             }));
             container = document.getElementById('output')
-            container.innerHTML = `<h2 id="status">Try to connect to ` + cred.ip + `</h2>`
+            container.innerHTML = `<h2 id="status">Пытаюсь подключиться к ` + cred.ip + `</h2>`
         }
     }
 
     ws.onmessage = function (e) {
-        console.log('runned onmessage method');
-        console.log({e});
+        // console.log('runned onmessage method');
         data = JSON.parse(e.data)
+        // console.log({data});
         if (data.status) updateStatus(data.status)
         if (data.ne) sessionStorage.setItem('ne', data.ne)
-        if (data.command) addOutputBlock(
+        if (data.command) {
+            addOutputBlock(
                 data.command,
                 (data.output) ? data.check_status : "ok",
-                (data.output) ? data.output : "Output is empty"
-        )
-        
+                (data.output) ? data.output : "Output is empty",
+                data.comment
+            )
+            fix_text_area()
+        }
     };
 
     ws.onerror = function(err) {
         console.error('Socket encountered error: ', err.message, 'Closing socket');
-        updateStatus(`<h2 id="status">Error during work with NE </h2>`)
+        updateStatus(`<h2 id="status">Ошибка во время работы с оборудованием.</h2>`)
         ws.close();
       };
 }
@@ -287,12 +325,27 @@ function updateStatus(stat) {
     container.innerHTML = stat
 }
 
-function addOutputBlock(command, checkStatus , output) {
-    comment = (checkStatus ===  'false') ? `<textarea placeholder="Comment" class="comment"></textarea>` : ''
+function addOutputBlock(command, checkStatus , output, comment_text) {
+    // console.log(comment_text);
+    if (checkStatus === 'false') {
+        comment = document.createElement("textarea");
+        comment.placeholder = 'Comment'
+        comment.classList.add("comment")
+        comment.setAttribute("oninput", "auto_grow(this)");
+        comment.innerHTML = comment_text
+        
+    }
+    else { comment = '' }
+    comment = (comment.outerHTML) ? comment.outerHTML : ''
+    
+    display = (output.split(/\n/g).length > 30) ? 'none' : 'block'
+    show = (output.split(/\n/g).length > 30) ? 'Показать' : 'Скрыть'
+
     template = `<div class="block">
     <div class="output-block ` + checkStatus + `">
         <b>` + command + `</b>
-        <pre>` + output + `</pre>
+        <button class="acc_head" onclick="showHide(this)">` + show +` вывод команды</button>
+        <pre class="acc_body" style="display: ` + display + `;">` + output.replace(/\</g, "&lt;").replace(/\>/g, "&gt;") + `</pre>
 ` + comment + `
     </div>
     
@@ -324,3 +377,25 @@ function uncheckAll() {
         }
     }
 }
+
+function showHide(el) {
+    // console.log({el});
+    if (el.innerHTML === "Показать вывод команды") {
+        el.innerHTML = "Скрыть  вывод команды"
+    }
+    else {
+        el.innerHTML = "Показать  вывод команды"
+    }
+    $(el).siblings('.acc_body').slideToggle();
+}
+
+function auto_grow(element) {
+    element.style.height = "5px";
+    element.style.height = (element.scrollHeight) + "px";
+}
+  
+function fix_text_area() {
+    let comments = document.getElementsByClassName('comment');
+    for (let i = 0; i < comments.length; i++) 
+            auto_grow(comments[i]);
+    }

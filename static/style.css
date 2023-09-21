@@ -51,6 +51,12 @@ pre {
     word-wrap: break-word;       
 }
 
+textarea {
+    resize: none;
+    overflow: hidden;
+    min-height: auto;
+  }
+
 #devices{
     overflow-y: scroll;
     max-height: 10vh;    
@@ -167,6 +173,10 @@ pre {
     justify-content: end;
 }
 
+.buttons {
+    display: flex;
+    justify-content: space-around;
+}
 
 .button {
     height: 30px;
@@ -207,9 +217,7 @@ pre {
 }
 
 .acc_head{
-    background:#444;
-    padding:5px;
-    color:#fff;
+    width: max-content;
 }
 .acc_body{
     display:none;

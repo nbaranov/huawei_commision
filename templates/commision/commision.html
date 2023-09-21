@@ -3,27 +3,27 @@
     {% block side_menu %}
             <div class="fix">
             <fieldset>
-                <legend>Input credentials:</legend>
-                <input type="text" name="ip" id="ip" placeholder="10.174.0.2">
-                <input  type="login" name="login" id="login" placeholder="Login">
-                <input type="password" name="password" id="password" placeholder="Password">
-                {% comment %} <input type="text" name="iplist" id="iplist" placeholder="10.174.0.1, 10.174.0.2"> {% endcomment %}
+                <legend>Данные для авторизации и проверки:</legend>
+                <input type="text" name="ip" id="ip" oninput="saveIP()" placeholder="ip-адресс">
+                <input  type="login" name="login" id="login" oninput="saveLogin()" placeholder="Логин">
+                <input type="password" name="password" id="password" oninput="savePassword()" placeholder="Пароль">
+                <input type="text" name="iplist" id="iplist" oninput="saveIPList()" placeholder="IP ближних agg через запятую">
             </fieldset>
-            <fieldset id="devices"><legend >Select NE type:</legend></fieldset>
-
+            <fieldset id="devices">
+                <legend >Выберите тип NE:</legend>
+            </fieldset>
             <fieldset id="commands">
-                <legend>Select checks:</legend>
-
+                <legend>Выберите команды:</legend>
             </fieldset>
             <div class='buttons'>
-                <button class="left-button" onclick="checkAll();">Check All</button>
-                <button class="left-button" onclick="uncheckAll()">Uncheck All</button>    
+                <button class="left-button" onclick="checkAll();">Выделить всё</button>
+                <button class="left-button" onclick="uncheckAll()">Отменить всё</button>    
             </div>
-            <button class="left-button srun" onclick="runSocket();" type="submit"></button>
-            <button class="left-button" onclick="generateHTML()">Download result</button>
+            <button class="left-button" onclick="runSocket();" type="submit">Начать проверку</button>
+            <button class="left-button" onclick="generateHTML()">Скачать результат</button>
             </div>
     {% endblock side_menu %}
 
     {% block main_block %}
-            <h2> Check result will be here: </h2>
+            <h2> Результаты проверки будут здесь: </h2>
     {% endblock main_block %}
