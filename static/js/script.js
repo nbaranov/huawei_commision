@@ -116,29 +116,25 @@ function loadDevices() {
             return response.json();
         })
         .then((data) => {
-            const devices = []
-            for (const device of data.results) {
-                devices[device.id] = device.name
-            }
-            sessionStorage.setItem('devs', JSON.stringify(devices))
-            // console.log("devices loaded ", { devices });
-            return devices
+            sessionStorage.setItem('devs', JSON.stringify(data.results))
+            return data.results
         })
         .then((devices) => {
-            devices = JSON.parse(sessionStorage.getItem('devs'))
             const node = document.getElementById("devices")
-            for (let i = 0; i < devices.length; i++) {
-                if (devices[i]) {
-                    let html = document.createElement('div')
-                    html.insertAdjacentHTML('beforeend', `
+            devices = JSON.parse(sessionStorage.getItem('devs'))
+            // console.log(devices);
+            sort_devices = devices.sort((a, b) => a.vendor > b.vendor ? 1 : -1);;
+            for (const device of sort_devices) {
+                // console.log(device)
+                let html = document.createElement('div')
+                html.insertAdjacentHTML('beforeend', `
             <label>
-                <input type="radio" id="`+ devices[i] + `" name="ne" 
-                value=` + i.toString() + ` onclick="getCommands(` + i.toString() + `, this)">` + devices[i] +
-                        `
+                <input type="radio" id="`+ device.id + `" name="ne" 
+                value=` + device.id + ` onclick="getCommands(` + device.id + `, this)">` +
+                    device.vendor + ` - ` + device.name + `
             </label>
             `)
                     node.appendChild(html)
-                }
             }
             node.getElementsByTagName("label")[0].click()
         })
@@ -250,6 +246,15 @@ function nl2br (str, is_xhtml) {
     return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
 
+function getCheckedVendor() {
+    var ele = document.getElementsByName('ne');
+
+    for (i = 0; i < ele.length; i++) {
+        if (ele[i].checked)
+            return ele[i].parentElement.textContent.split(' - ')[0].toLowerCase().trim()
+    }
+}
+
 function getIDList() {
     let com_divs = document.getElementsByClassName("command")
     com_divs = Array.from(com_divs)
@@ -279,6 +284,8 @@ function getCredentials() {
 function runSocket() {
     const cred = getCredentials();
     // console.log({cred});
+    const vendor = getCheckedVendor()
+    // console.log(vendor);
     const id_list = getIDList();
     // console.log({ id_list });
     if (id_list) {
@@ -289,7 +296,8 @@ function runSocket() {
                 'login': cred.login,
                 'password': cred.password,
                 'iplist': cred.iplist,
-                'id_list': id_list
+                'id_list': id_list,
+                'vendor' : vendor
             }));
             container = document.getElementById('output')
             container.innerHTML = `<h2 id="status">Пытаюсь подключиться к ` + cred.ip + `</h2>`
@@ -398,4 +406,19 @@ function fix_text_area() {
     let comments = document.getElementsByClassName('comment');
     for (let i = 0; i < comments.length; i++) 
             auto_grow(comments[i]);
+}
+    
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
     }
+    return function (a,b) {
+        /* next line works with strings and numbers, 
+         * and you may want to customize it to your needs
+         */
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}

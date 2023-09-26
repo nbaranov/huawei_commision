@@ -11,7 +11,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows devices to be viewed or edited.
     """
-    queryset = Device.objects.all().order_by('id')
+    queryset = Device.objects.all().order_by('vendor', 'id')
     serializer_class = DeviceSerializer
 
 class CategoryViewSet(viewsets.ModelViewSet):

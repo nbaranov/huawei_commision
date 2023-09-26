@@ -1,5 +1,5 @@
 
-from netmiko import ConnectHandler
+from netmiko.huawei import HuaweiSSH
 from netmiko.exceptions import NetmikoAuthenticationException
 from netmiko.exceptions import SSHException
 from netmiko.exceptions import NetmikoTimeoutException
@@ -112,13 +112,7 @@ def default_command_func(ne, com, *args):
 
 async def run_command_list(ip, username, password, agg_ip, com_list):
     try:
-        device = {
-            "device_type": "huawei",
-            "host": ip,
-            "username": username,
-            "password": password,
-        }
-        ne = ConnectHandler(**device)
+        ne = HuaweiSSH(host=ip, username=username, password=password)
         if not(ne is None):
             promt = ne.find_prompt()[1:-1]
             yield {'status': f'Подключился к {promt}'}
