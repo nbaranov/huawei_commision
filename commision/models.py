@@ -10,11 +10,19 @@ class NonStrippingTextField(TextField):
         return super(NonStrippingTextField, self).formfield(**kwargs)
 
 # Create your models here.
+
+class Vendor(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    
+    def __str__(self):
+        return f"{self.name}"
+
 class Device(models.Model):
     name = models.CharField(max_length=255, unique=True)
-
+    vendor = models.ForeignKey(Vendor, on_delete=models.DO_NOTHING, default=None, blank=True, null=True)
+    
     def __str__(self):
-        return self.name
+        return f"{self.vendor} - {self.name}"
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
@@ -24,7 +32,7 @@ class Category(models.Model):
 
 class Command(models.Model):
     command = models.CharField(max_length=1024)
-    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING, default=1)
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     for_device = models.ManyToManyField(Device)
     ok_if_include = models.CharField(max_length=512, blank=True, default='')
     ok_if_exclude = models.CharField(max_length=512, blank=True, default='')
